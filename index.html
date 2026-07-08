@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReeAi - AI Motion Video Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      margin-left: 25px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 8%;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hero-text h1 {
+      font-size: 52px;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .hero-text h1 span {
+      color: #38bdf8;
+    }
+
+    .hero-text p {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 30px;
+      max-width: 550px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+
+    .btn-primary:hover {
+      background: #0ea5e9;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #38bdf8;
+      color: #38bdf8;
+    }
+
+    .btn-secondary:hover {
+      background: #38bdf8;
+      color: #0f172a;
+      transform: translateY(-2px);
+    }
+
+    .hero-image {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #38bdf8;
+    }
+
+    .card textarea,
+    .card select,
+    .card button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+    }
+
+    .card textarea,
+    .card select {
+      background: #0f172a;
+      color: white;
+      outline: none;
+      border: 1px solid #334155;
+    }
+
+    .generate-btn {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .generate-btn:hover {
+      background: #0ea5e9;
+    }
+
+    .features {
+      padding: 70px 8%;
+      text-align: center;
+    }
+
+    .features h2 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .features p {
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      font-size: 17px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-box {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 25px;
+      border-radius: 18px;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .feature-box:hover {
+      transform: translateY(-6px);
+      border-color: #38bdf8;
+    }
+
+    .feature-box h3 {
+      color: #38bdf8;
+      margin-bottom: 12px;
+    }
+
+    .feature-box p {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .preview {
+      padding: 70px 8%;
+      text-align: center;
+    }
+
+    .preview h2 {
+      font-size: 38px;
+      margin-bottom: 20px;
+    }
+
+    .video-box {
+      max-width: 850px;
+      margin: 30px auto 0;
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .video-placeholder {
+      width: 100%;
+      height: 420px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      color: #94a3b8;
+      border: 2px dashed #334155;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cta {
+      padding: 80px 8%;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      color: #cbd5e1;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    footer {
+      padding: 25px 8%;
+      text-align: center;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hero-text h1 {
+        font-size: 40px;
+      }
+
+      .video-placeholder {
+        height: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">ReeAi</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#preview">Preview</a>
+      <a href="#create">Create</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="create">
+    <div class="hero-text">
+      <h1>Create Stunning <span>AI Motion Videos</span> in Seconds</h1>
+      <p>
+        ReeAi helps creators turn simple prompts into engaging AI-powered motion videos.
+        Generate animations, social media clips, promo visuals, and storytelling videos
+        with speed, creativity, and zero editing stress.
+      </p>
+
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="scrollToGenerator()">Start Creating</button>
+        <button class="btn btn-secondary" onclick="showDemo()">Watch Demo</button>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="card">
+        <h3>Generate Your Motion Video</h3>
+        <textarea id="promptInput" rows="5" placeholder="Describe your video idea... e.g. A futuristic city at night with neon lights and flying cars"></textarea>
+
+        <select id="styleSelect">
+          <option value="Cinematic">Cinematic</option>
+          <option value="3D Animation">3D Animation</option>
+          <option value="Anime Style">Anime Style</option>
+          <option value="Pixar Style">Pixar Style</option>
+          <option value="Realistic">Realistic</option>
+        </select>
+
+        <select id="durationSelect">
+          <option value="10 seconds">10 seconds</option>
+          <option value="20 seconds">20 seconds</option>
+          <option value="30 seconds">30 seconds</option>
+          <option value="60 seconds">60 seconds</option>
+        </select>
+
+        <button class="generate-btn" onclick="generateVideo()">Generate Video</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <h2>Why Choose ReeAi?</h2>
+    <p>Everything you need to create powerful AI motion videos from one simple prompt.</p>
+
+    <div class="feature-grid">
+      <div class="feature-box">
+        <h3>Text to Motion</h3>
+        <p>Turn your ideas into animated motion videos by simply typing a prompt.</p>
+      </div>
+
+      <div class="feature-box">
+        <h3>Fast Rendering</h3>
+        <p>Generate smooth video concepts quickly for social media, ads, and storytelling.</p>
+      </div>
+
+      <div class="feature-box">
+        <h3>Multiple Styles</h3>
+        <p>Create videos in cinematic, realistic, 3D, anime, or cartoon-inspired styles.</p>
+      </div>
+
+      <div class="feature-box">
+        <h3>Creator Friendly</h3>
+        <p>Perfect for YouTubers, TikTok creators, marketers, and digital storytellers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="preview" id="preview">
+    <h2>Video Preview</h2>
+    <div class="video-box">
+      <div class="video-placeholder" id="videoOutput">
+        Your generated ReeAi motion video preview will appear here.
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <h2>Bring Your Imagination to Motion</h2>
+    <p>
+      Whether you're creating short-form content, ad videos, story animations, or visual ideas,
+      ReeAi gives you a fast and stylish way to generate motion videos powered by AI.
+    </p>
+    <button class="btn btn-primary" onclick="scrollToGenerator()">Generate with ReeAi</button>
+  </section>
+
+  <footer>
+    © 2026 ReeAi. All rights reserved. Built for AI motion video generation.
+  </footer>
+
+  <script>
+    function generateVideo() {
+      const prompt = document.getElementById("promptInput").value;
+      const style = document.getElementById("styleSelect").value;
+      const duration = document.getElementById("durationSelect").value;
+      const output = document.getElementById("videoOutput");
+
+      if (prompt.trim() === "") {
+        output.innerHTML = "⚠️ Please enter a video prompt before generating.";
+        return;
+      }
+
+      output.innerHTML = `
+        <div>
+          <h3 style="color:#38bdf8; margin-bottom: 15px;">Generating with ReeAi...</h3>
+          <p><strong>Prompt:</strong> ${prompt}</p>
+          <p><strong>Style:</strong> ${style}</p>
+          <p><strong>Duration:</strong> ${duration}</p>
+          <br>
+          <p style="color:#94a3b8;">Your AI motion video preview would be rendered here.</p>
+        </div>
+      `;
+    }
+
+    function scrollToGenerator() {
+      document.getElementById("create").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function showDemo() {
+      const output = document.getElementById("videoOutput");
+      output.innerHTML = `
+        <div>
+          <h3 style="color:#38bdf8; margin-bottom: 15px;">ReeAi Demo Preview</h3>
+          <p>A cinematic AI motion video demo would play here.</p>
+          <br>
+          <p style="color:#94a3b8;">Connect this section to a real video file or AI API later.</p>
+        </div>
+      `;
+      document.getElementById("preview").scrollIntoView({ behavior: "smooth" });
+    }
+  </script>
+
+</body>
+  </html>
